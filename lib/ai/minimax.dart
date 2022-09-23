@@ -2,39 +2,47 @@ import 'dart:math';
 
 import 'package:tic_tac_toe/ai/board_utils.dart';
 
-int minimaxScore(List<String> boardData, String ai, String human, int depth) {
-  GameResult status = checkGameStatus(boardData, ai, human);
+// scores a move
+int minimaxScore(List<String> boardData, String ai, String human) {
+  // check wins
+  GameResult status = checkGameStatus(boardData);
 
-  if (status == GameResult.ai) {
-    return 10 - depth;
-  } else if (status == GameResult.human) {
-    return depth - 10;
+  if (status == GameResult.x) {
+    if (ai == 'X') {
+      return 10;
+    } else {
+      return -10;
+    }
+  } else if (status == GameResult.o) {
+    if (ai == 'O') {
+      return 10;
+    } else {
+      return -10;
+    }
   } else {
     return 0;
   }
 }
 
-int minimax(
-    List<String> boardData, int depth, bool isMax, String ai, String human) {
-  int score = minimaxScore(boardData, ai, human, depth);
+int minimax(List<String> boardData, bool isMax, String ai, String human) {
+  // get the score of the move we're evaluating
+  int score = minimaxScore([...boardData], ai, human);
 
-  if ((score + depth) == 10 || (score - depth) == -10) {
+  // return the score if this move ends the game
+  if (score != 0) {
     return score;
   }
   if (!emptyTilesRemaining(boardData)) {
     return 0;
   }
 
-  // calculating the maximum or minimum score
   if (isMax) {
-    var best = -1000;
-
-    // check all empty tiles
+    int best = -1000;
     for (int i = 0; i < 9; i++) {
       if (boardData[i] == '') {
-        // make the move, reassign best if the move is better, then undo the move
         boardData[i] = ai;
-        best = max(best, minimax(boardData, depth + 1, !isMax, ai, human));
+        best = max(best, minimax([...boardData], false, ai, human));
+
         boardData[i] = '';
       }
     }
@@ -45,7 +53,8 @@ int minimax(
     for (int i = 0; i < 9; i++) {
       if (boardData[i] == '') {
         boardData[i] = human;
-        best = min(best, minimax(boardData, depth + 1, !isMax, ai, human));
+        best = min(best, minimax([...boardData], true, ai, human));
+
         boardData[i] = '';
       }
     }
@@ -54,26 +63,20 @@ int minimax(
 }
 
 int findBestMove(List<String> boardData, String ai, String human) {
-  var bestVal = -1000;
-  var bestMove = -1;
+  int bestValue = -1000;
+  int bestMove = -1;
 
   for (int i = 0; i < 9; i++) {
     if (boardData[i] == '') {
       boardData[i] = ai;
-      var moveVal = minimax(boardData, 0, true, ai, human);
+      int moveVal = minimax([...boardData], false, ai, human);
       boardData[i] = '';
 
-      if (moveVal > bestVal) {
-        bestVal = moveVal;
+      if (moveVal > bestValue) {
         bestMove = i;
+        bestValue = moveVal;
       }
     }
   }
   return bestMove;
 }
-
-/*void main() {
-  List<String> boardData = ['X', 'X', 'O', 'O', 'X', 'X', '', 'O', 'X'];
-  print(findBestMove(boardData, 'O', 'X'));
-}
-*/

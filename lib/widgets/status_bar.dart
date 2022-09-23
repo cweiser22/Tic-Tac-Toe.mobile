@@ -12,10 +12,10 @@ class StatusBar extends StatelessWidget {
     String statusText;
 
     if (!live) {
-      if (result == GameResult.ai) {
-        statusText = 'The AI Won!';
-      } else if (result == GameResult.human) {
-        statusText = 'Huh, you won.';
+      if (result == GameResult.o) {
+        statusText = 'O Wins!';
+      } else if (result == GameResult.x) {
+        statusText = 'X wins!';
       } else if (result == GameResult.draw) {
         statusText = 'It\'s a draw!';
       } else {
@@ -25,7 +25,6 @@ class StatusBar extends StatelessWidget {
       statusText = 'Game in progress...';
     }
 
-    // TODO: implement build
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: Material(

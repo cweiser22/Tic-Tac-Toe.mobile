@@ -8,8 +8,9 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: MediaQuery.of(context).size.width,
+    return SizedBox(
+      width: 280,
+      height: 280,
       //flex: 3,
       child: GridView.builder(
           physics: const NeverScrollableScrollPhysics(),

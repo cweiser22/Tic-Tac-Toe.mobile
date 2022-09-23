@@ -13,43 +13,86 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<String> _boardData = ['', '', '', '', '', '', '', '', '', ''];
+  List<String> _boardData = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
   String _player = 'X';
   bool _live = false;
-  bool _won = false;
+
   GameResult _result = GameResult.none;
 
   // helper function to wipe the board
   void _resetBoard() {
     setState(() {
-      _boardData = ['', '', '', '', '', '', '', '', '', ''];
+      _boardData = [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
     });
   }
 
   // helper function to set a tile
   void _setTile(int index, String c) {
     setState(() {
-      _boardData[index] = c;
+      var newBoard = [..._boardData];
+      newBoard[index] = c;
+      _boardData = newBoard;
     });
   }
 
+  // helper function to set result
   void _setResult(GameResult r) {
     setState(() {
       _result = r;
     });
   }
 
+  // helper function to set live
+  void _setLive(bool v) {
+    setState(() {
+      _live = v;
+    });
+  }
+
+  // helper function to set player
+  void _setPlayer(String c) {
+    setState(() {
+      _player = c;
+    });
+  }
+
   // handle tile being tapped
   void _tapped(int index) {
+    // only run if a valid tile is tapped and the game is live
     if (_live && _boardData[index] == '') {
       // set the tile
       _setTile(index, _player);
 
-      _setResult(
-          checkGameStatus(_boardData, _player == 'X' ? 'O' : 'X', _player));
+      // set the game result
+      _setResult(checkGameStatus(_boardData));
 
-      if (_result == GameResult.human || _result == GameResult.draw) {
-        _live = false;
+      if (_result == GameResult.draw) {
+        _setLive(false);
+      }
+
+      if (_result == (_player == 'X' ? GameResult.x : GameResult.o) ||
+          _result == GameResult.draw) {
+        _setLive(false);
         return;
       }
 
@@ -58,11 +101,11 @@ class _HomeViewState extends State<HomeView> {
 
       _setTile(bestMove, _player == 'X' ? 'O' : 'X');
 
-      _setResult(
-          checkGameStatus(_boardData, _player == 'X' ? 'O' : 'X', _player));
+      _setResult(checkGameStatus(_boardData));
 
-      if (_result == GameResult.ai || _result == GameResult.draw) {
-        _live = false;
+      if (_result == (_player == 'X' ? GameResult.o : GameResult.x) ||
+          _result == GameResult.draw) {
+        _setLive(false);
         return;
       }
     }
@@ -70,17 +113,13 @@ class _HomeViewState extends State<HomeView> {
 
   void _startGame() {
     _resetBoard();
-    setState(() {
-      //_result = GameResult.none;
-      _live = true;
-    });
+    _setLive(true);
     if (_player == 'O') {
-      var bestMove = findBestMove(_boardData, 'X', 'O');
+      var bestMove =
+          findBestMove(_boardData, _player == 'X' ? 'O' : 'X', _player);
       _setTile(bestMove, 'X');
     }
   }
-
-  void _setPlayer(String c) {}
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +137,7 @@ class _HomeViewState extends State<HomeView> {
               tileTapped: (index) => _tapped(index),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
                   if (!_live) {
@@ -112,6 +151,7 @@ class _HomeViewState extends State<HomeView> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                    fixedSize: Size.fromWidth(270),
                     minimumSize: Size.fromHeight(40),
                     elevation: 0,
                     backgroundColor: !_live ? Colors.blue : Colors.red,
@@ -138,9 +178,7 @@ class _HomeViewState extends State<HomeView> {
                 ],
                 onToggle: (index) {
                   if (!_live) {
-                    setState(() {
-                      _player = index == 0 ? 'X' : 'O';
-                    });
+                    _setPlayer(index == 0 ? 'X' : 'O');
                   }
                 },
               ),

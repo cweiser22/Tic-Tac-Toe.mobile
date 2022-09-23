@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Board extends StatelessWidget {
-  List<String> boardData;
-  Function tileTapped;
+  final List<String> boardData;
+  final Function tileTapped;
 
-  Board({required this.boardData, required this.tileTapped});
+  const Board({super.key, required this.boardData, required this.tileTapped});
 
   @override
   Widget build(BuildContext context) {

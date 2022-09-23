@@ -151,8 +151,8 @@ class _HomeViewState extends State<HomeView> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                    fixedSize: Size.fromWidth(270),
-                    minimumSize: Size.fromHeight(40),
+                    fixedSize: const Size.fromWidth(270),
+                    minimumSize: const Size.fromHeight(40),
                     elevation: 0,
                     backgroundColor: !_live ? Colors.blue : Colors.red,
                     shape: RoundedRectangleBorder(
@@ -167,9 +167,9 @@ class _HomeViewState extends State<HomeView> {
                 changeOnTap: !_live,
                 //minHeight: 5,
                 initialLabelIndex: _player == 'X' ? 0 : 1,
-                icons: [Icons.close, Icons.radio_button_unchecked],
+                icons: const [Icons.close, Icons.radio_button_unchecked],
                 iconSize: 60,
-                customIcons: [
+                customIcons: const [
                   Icon(Icons.close, color: Colors.red),
                   Icon(
                     Icons.radio_button_unchecked,

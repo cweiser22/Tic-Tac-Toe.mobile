@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/ai/board_utils.dart';
 
 class StatusBar extends StatelessWidget {
-  GameResult result;
-  bool live;
+  final GameResult result;
+  final bool live;
 
-  StatusBar({super.key, required this.result, required this.live});
+  const StatusBar({super.key, required this.result, required this.live});
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,12 @@ class StatusBar extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            height: 40,
             child: Center(
                 child: Text(
               statusText,
               textAlign: TextAlign.center,
             )),
-            height: 40,
           )),
     );
   }

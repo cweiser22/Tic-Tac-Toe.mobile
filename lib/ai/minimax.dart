@@ -42,6 +42,7 @@ int minimax(
     return 0;
   }
 
+  // maximize or minimize
   if (isMax) {
     int best = -1000;
     for (int i = 0; i < 9; i++) {
@@ -68,6 +69,7 @@ int minimax(
   }
 }
 
+// returns the index of the best move for the ai
 int findBestMove(List<String> boardData, String ai, String human) {
   int bestValue = -1000;
   int bestMove = -1;

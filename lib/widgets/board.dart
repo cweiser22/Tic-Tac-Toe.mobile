@@ -11,11 +11,8 @@ class Board extends StatelessWidget {
     return SizedBox(
       width: 280,
       height: 280,
-      //flex: 3,
       child: GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
-          //padding: const EdgeInsets.all(8.0),
-          //shrinkWrap: true,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
           itemCount: 9,
